@@ -1,16 +1,6 @@
 apply plugin: 'groovy'
 apply plugin: 'idea'
 
-def templates = [
-        default: {
-            publishers {
-                artifactArchiver {
-                    artifacts = '**/*.jar'
-                }
-            }
-        }
-]
-
 buildscript {
     repositories {
         maven {
@@ -18,13 +8,9 @@ buildscript {
         }
     }
 }
+
 apply plugin: 'jenkins'
 
 jenkins {
     console = true
-    template templates.default
-    
-    template.publishers.artifactArchiver {
-        onlyIfSuccessful = true
-    }
 }
