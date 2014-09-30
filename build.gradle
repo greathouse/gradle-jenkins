@@ -19,6 +19,9 @@ jenkins {
             junitResultArchiver {
                 testResults = '**/*.jar'
             }
+            htmlPublisher {
+
+            }
         }
     }
 }

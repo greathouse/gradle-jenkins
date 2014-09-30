@@ -1,6 +1,7 @@
 package com.greenmoonsoftware.gradle.jenkins
 
 import com.greenmoonsoftware.gradle.jenkins.tasks.CreateJobTask
+import com.greenmoonsoftware.gradle.jenkins.tasks.InstallPluginsTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -11,7 +12,8 @@ class Jenkins implements Plugin<Project> {
             extensions.create("jenkins", JenkinsProjectExtension)
         }
 
-        project.task('jenkins-create', type: CreateJobTask)
+        project.task('jenkinsCreateJob', type: CreateJobTask)
+        project.task('jenkinsInstallPlugins', type: InstallPluginsTask)
 
         project.task('jenkins') << {
             writeFile(project)
