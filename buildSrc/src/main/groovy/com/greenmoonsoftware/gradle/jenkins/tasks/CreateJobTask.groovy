@@ -8,21 +8,49 @@ class CreateJobTask extends DefaultTask {
     @TaskAction
     def createJob() {
         def url = 'http://localhost:8080'
-        //http://localhost:8080/createItem
         def configXml = ConfigGenerator.generate(project)
-        String type = "application/xml";
-        URL u = new URL("${url}/createItem?name=${project.name}");
-        HttpURLConnection conn = (HttpURLConnection) u.openConnection();
-        conn.setDoOutput(true);
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty( "Content-Type", type );
-        conn.setRequestProperty( "Content-Length", String.valueOf(configXml.length()));
-        OutputStream os = conn.getOutputStream();
-        os.write(configXml.getBytes());
+
+        if (existingJob(url)) {
+            updateJobPost(url, configXml)
+        }
+        else {
+            createJobPost(url, configXml)
+        }
+
+        println "Done"
+    }
+
+    private existingJob(url) {
+        URL u = new URL("${url}/job/${project.name}/config.xml")
+        HttpURLConnection huc =  (HttpURLConnection)  u.openConnection()
+        huc.setRequestMethod("GET")
+        huc.connect()
+        def responseCode = huc.responseCode
+        responseCode == 200
+    }
+
+    private createJobPost(url, String configXml) {
+        postData("${url}/createItem?name=${project.name}", configXml)
+    }
+
+    private updateJobPost(url, String configXml) {
+        postData("http://localhost:8080/job/${project.name}/config.xml", configXml)
+    }
+
+    private void postData(full, String configXml) {
+        URL u = new URL(full)
+        HttpURLConnection conn = (HttpURLConnection) u.openConnection()
+        conn.setDoOutput(true)
+        conn.setRequestMethod("POST")
+        conn.setRequestProperty("Content-Type", "application/xml")
+        conn.setRequestProperty("Content-Length", String.valueOf(configXml.length()))
+        OutputStream os = conn.getOutputStream()
+        os.write(configXml.getBytes())
         os.flush()
         os.close()
         def responseCode = conn.responseCode
-
-        println "Done: ${responseCode}"
+        if (responseCode != 200) {
+            throw new RuntimeException("Create job failed with response code: ${responseCode}")
+        }
     }
 }

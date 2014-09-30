@@ -17,7 +17,7 @@ jenkins {
     template {
         publishers {
             junitResultArchiver {
-                testResults = 'Something'
+                testResults = '**/*.jar'
             }
         }
     }
