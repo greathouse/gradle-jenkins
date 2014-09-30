@@ -13,4 +13,12 @@ apply plugin: 'jenkins'
 
 jenkins {
     console = true
+
+    template {
+        publishers {
+            junitResultArchiver {
+                testResults = 'Something'
+            }
+        }
+    }
 }
