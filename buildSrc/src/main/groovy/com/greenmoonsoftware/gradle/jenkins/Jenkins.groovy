@@ -20,8 +20,12 @@ class Jenkins implements Plugin<Project> {
         def outputDir = "${project.buildDir}/jenkins"
         new File(outputDir).mkdirs()
         def outputFilename = "${outputDir}/config.xml"
+        def xml = generate(project)
+        if (project.jenkins.console) {
+            println xml
+        }
         new File(outputFilename).withWriter { w ->
-            w.write(generate(project))
+            w.write(xml)
         }
         project.logger.lifecycle "Jenkins config.xml written to ${outputFilename}"
     }

@@ -1,17 +1,30 @@
 apply plugin: 'groovy'
 apply plugin: 'idea'
 
+def templates = [
+        default: {
+            publishers {
+                artifactArchiver {
+                    artifacts = '**/*.jar'
+                }
+            }
+        }
+]
+
 buildscript {
     repositories {
         maven {
-            url uri('repo')
             mavenCentral()
         }
     }
-    dependencies {
-        classpath group: 'com.greenmoonsoftware',
-        name: 'gradle-jenkins',
-        version: '0.1'
-    }
 }
 apply plugin: 'jenkins'
+
+jenkins {
+    console = true
+    template templates.default
+    
+    template.publishers.artifactArchiver {
+        onlyIfSuccessful = true
+    }
+}

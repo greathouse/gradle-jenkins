@@ -1,6 +1,8 @@
 package com.greenmoonsoftware.gradle.jenkins
 
 class JenkinsProjectExtension {
+    boolean console = false
+
     Config template = new Config()
     Config config = new Config()
 

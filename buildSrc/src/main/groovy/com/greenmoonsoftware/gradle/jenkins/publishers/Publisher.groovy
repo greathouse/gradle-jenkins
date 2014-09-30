@@ -43,11 +43,11 @@ class Publisher {
 
     String getConfig() {
         def config = new StringBuilder()
-        config << artifactArchiver?.config
-        config << jUnitResultArchiver?.config
-        config << htmlPublisher?.config
-        config << buildTrigger?.config
-        config << mailer?.config
+        config << artifactArchiver?.config ?: ''
+        config << jUnitResultArchiver?.config ?: ''
+        config << htmlPublisher?.config ?: ''
+        config << buildTrigger?.config ?: ''
+        config << mailer?.config ?: ''
         config
     }
 }
