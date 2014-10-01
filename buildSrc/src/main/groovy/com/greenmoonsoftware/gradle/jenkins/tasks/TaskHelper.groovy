@@ -1,7 +1,7 @@
 package com.greenmoonsoftware.gradle.jenkins.tasks
 
 class TaskHelper {
-    public static void postData(String url, String configXml) {
+    public static postData(String url, String configXml, Closure withData = {}) {
         URL u = new URL(url)
         HttpURLConnection conn = (HttpURLConnection) u.openConnection()
         conn.setDoOutput(true)
@@ -17,5 +17,6 @@ class TaskHelper {
         if (responseCode != 200) {
             throw new RuntimeException("POST ${url} failed: Response Code: ${responseCode}")
         }
+        return withData(conn.inputStream)
     }
 }

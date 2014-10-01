@@ -1,6 +1,7 @@
 package com.greenmoonsoftware.gradle.jenkins.tasks
 
 import com.greenmoonsoftware.gradle.jenkins.ConfigGenerator
+import groovy.json.JsonSlurper
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
@@ -10,6 +11,11 @@ class CreateJobTask extends DefaultTask {
         def url = 'http://localhost:8080'
         def configXml = ConfigGenerator.generate(project)
 
+        if (missingPlugins(url, configXml)) {
+           println "Some plugins are missing. Please execute the '${project.name}:jenkinsInstallPlugins' task"
+            throw new RuntimeException('Missing plugins')
+        }
+
         if (existingJob(url)) {
             updateJobPost(url, configXml)
         }
@@ -18,6 +24,14 @@ class CreateJobTask extends DefaultTask {
         }
 
         println "Done"
+    }
+
+    private missingPlugins(url, configXml) {
+        def full = "${url}/pluginManager/prevalidateConfig"
+        TaskHelper.postData(full, configXml) {
+            def missingPlugins = new JsonSlurper().parse(it)
+            return missingPlugins
+        }
     }
 
     private existingJob(url) {
