@@ -8,6 +8,6 @@ class InstallPluginsTask extends DefaultTask {
     @TaskAction
     def installPlugins() {
         def xml = ConfigGenerator.generate(project)
-        TaskHelper.postData('http://localhost:8080/pluginManager/installNecessaryPlugins', xml)
+        TaskHelper.postData("${project.jenkins.url}/pluginManager/installNecessaryPlugins", xml)
     }
 }

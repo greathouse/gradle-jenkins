@@ -13,11 +13,11 @@ apply plugin: 'jenkins'
 
 jenkins {
     console = true
-
+    jobName = 'greenmoon.build.root-project'
     template {
         publishers {
             junitResultArchiver {
-                testResults = '**/*.jar'
+                testResults = '**/*.blech'
             }
             htmlPublisher {
 

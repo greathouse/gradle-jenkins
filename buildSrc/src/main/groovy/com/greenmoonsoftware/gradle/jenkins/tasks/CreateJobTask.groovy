@@ -8,34 +8,37 @@ import org.gradle.api.tasks.TaskAction
 class CreateJobTask extends DefaultTask {
     @TaskAction
     def createJob() {
-        def url = 'http://localhost:8080'
         def configXml = ConfigGenerator.generate(project)
 
-        if (missingPlugins(url, configXml)) {
-           println "Some plugins are missing. Please execute the '${project.name}:jenkinsInstallPlugins' task"
-            throw new RuntimeException('Missing plugins')
-        }
+        checkForPlugins(configXml)
 
-        if (existingJob(url)) {
-            updateJobPost(url, configXml)
+        if (existingJob()) {
+            updateJobPost(configXml)
         }
         else {
-            createJobPost(url, configXml)
+            createJobPost(configXml)
         }
 
         println "Done"
     }
 
-    private missingPlugins(url, configXml) {
-        def full = "${url}/pluginManager/prevalidateConfig"
+    private void checkForPlugins(String configXml) {
+        if (missingPlugins(configXml)) {
+            println "Some plugins are missing. Please execute the '${project.name}:jenkinsInstallPlugins' task"
+            throw new RuntimeException('Missing plugins')
+        }
+    }
+
+    private missingPlugins(configXml) {
+        def full = "${project.jenkins.url}/pluginManager/prevalidateConfig"
         TaskHelper.postData(full, configXml) {
             def missingPlugins = new JsonSlurper().parse(it)
             return missingPlugins
         }
     }
 
-    private existingJob(url) {
-        URL u = new URL("${url}/job/${project.name}/config.xml")
+    private existingJob() {
+        URL u = new URL("${project.jenkins.url}/job/${project.jenkins.jobName}/config.xml")
         HttpURLConnection huc =  (HttpURLConnection)  u.openConnection()
         huc.setRequestMethod("GET")
         huc.connect()
@@ -43,11 +46,11 @@ class CreateJobTask extends DefaultTask {
         responseCode == 200
     }
 
-    private createJobPost(url, String configXml) {
-        TaskHelper.postData("${url}/createItem?name=${project.name}", configXml)
+    private createJobPost(String configXml) {
+        TaskHelper.postData("${project.jenkins.url}/createItem?name=${project.jenkins.jobName}", configXml)
     }
 
-    private updateJobPost(url, String configXml) {
-        TaskHelper.postData("http://localhost:8080/job/${project.name}/config.xml", configXml)
+    private updateJobPost(String configXml) {
+        TaskHelper.postData("${project.jenkins.url}/job/${project.jenkins.jobName}/config.xml", configXml)
     }
 }
