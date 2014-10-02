@@ -1,7 +1,9 @@
 package com.greenmoonsoftware.gradle.jenkins.publishers
 
+import com.greenmoonsoftware.gradle.jenkins.publishers.artifact.ArtifactArchiver
 import com.greenmoonsoftware.gradle.jenkins.publishers.buildtrigger.BuildTrigger
 import com.greenmoonsoftware.gradle.jenkins.publishers.htmlpublisher.HtmlPublisher
+import com.greenmoonsoftware.gradle.jenkins.publishers.junit.JUnitResultArchiver
 import com.greenmoonsoftware.gradle.jenkins.publishers.mailer.Mailer
 
 class Publisher {

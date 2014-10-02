@@ -20,10 +20,17 @@ dependencies {
     compile gradleApi()
 }
 
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
+            artifact sourceJar {
+                classifier "sources"
+            }
         }
     }
 }
@@ -33,7 +40,7 @@ bintray {
     key = binttrayApiKey
 
     publications = ['mavenJava']
-    publish = false //If version should be auto published after an upload
+    publish = true //If version should be auto published after an upload
     pkg {
         repo = 'maven'
         name = 'gradle-jenkins'
@@ -43,6 +50,9 @@ bintray {
         vcsUrl = 'git@github.com:greathouse/gradle-jenkins.git'
         licenses = ['Apache-2.0']
         publicDownloadNumbers = true
+        version {
+            attributes = ['gradle-plugin': "com.greenmoonsoftware.jenkins:com.greenmoonsoftware:gradle-jenkins'"]
+        }
     }
 }
 

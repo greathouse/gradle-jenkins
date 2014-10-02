@@ -1,5 +1,7 @@
 package com.greenmoonsoftware.gradle.jenkins.properties
 
+import com.greenmoonsoftware.gradle.jenkins.properties.pipeline.Pipeline
+
 class Props {
     final name
     Pipeline pipeline

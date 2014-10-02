@@ -1,4 +1,4 @@
-package com.greenmoonsoftware.gradle.jenkins.publishers
+package com.greenmoonsoftware.gradle.jenkins.publishers.artifact
 
 class ArtifactArchiver {
     final String name

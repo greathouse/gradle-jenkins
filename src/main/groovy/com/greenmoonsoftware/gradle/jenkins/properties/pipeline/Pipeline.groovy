@@ -1,4 +1,4 @@
-package com.greenmoonsoftware.gradle.jenkins.properties
+package com.greenmoonsoftware.gradle.jenkins.properties.pipeline
 
 import groovy.xml.XmlUtil
 
