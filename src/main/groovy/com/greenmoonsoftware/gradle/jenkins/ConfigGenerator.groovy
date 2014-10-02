@@ -2,51 +2,51 @@ package com.greenmoonsoftware.gradle.jenkins
 
 class ConfigGenerator {
     private static String description(project) {
-        project.jenkins.template.description
+        project.jenkins.config.description
     }
 
     private static String keepDependencies(project) {
-        project.jenkins.template.keepDependencies
+        project.jenkins.config.keepDependencies
     }
 
     private static String properties(project) {
-        (project.jenkins.template.props?.config) ?: ''
+        (project.jenkins.config.props?.config) ?: ''
     }
 
     private static String canRoam(project) {
-        project.jenkins.template.canRoam
+        project.jenkins.config.canRoam
     }
 
     private static String disabled(project) {
-        project.jenkins.template.disabled
+        project.jenkins.config.disabled
     }
 
     private static String blockBuildWhenDownstreamBuilding(project) {
-        project.jenkins.template.blockBuildWhenDownstreamBuilding
+        project.jenkins.config.blockBuildWhenDownstreamBuilding
     }
 
     private static String blockBuildWhenUpstreamBuilding(project) {
-        project.jenkins.template.blockBuildWhenUpstreamBuilding
+        project.jenkins.config.blockBuildWhenUpstreamBuilding
     }
 
     private static String scm(project) {
-        (project.jenkins.template.scm?.config) ?: ''
+        (project.jenkins.config.scm?.config) ?: ''
     }
 
     private static String triggers(project) {
-        (project.jenkins.template.triggers?.config) ?: ''
+        (project.jenkins.config.triggers?.config) ?: ''
     }
 
     private static String concurrentBuild(project) {
-        (project.jenkins.template.concurrentBuild) ?: ''
+        (project.jenkins.config.concurrentBuild) ?: ''
     }
 
     private static String builders(project) {
-        (project.jenkins.template.builders?.config) ?: ''
+        (project.jenkins.config.builders?.config) ?: ''
     }
 
     private static String publishers(project) {
-        (project.jenkins.template.publishers?.config) ?: ''
+        (project.jenkins.config.publishers?.config) ?: ''
     }
 
     public static String generate(project) {

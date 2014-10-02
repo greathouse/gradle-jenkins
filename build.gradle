@@ -1,36 +1,48 @@
 apply plugin: 'groovy'
 apply plugin: 'idea'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
 
 buildscript {
     repositories {
-        maven {
-            mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.5'
+    }
+}
+
+version = '1.0.0.SNAPSHOT'
+group = 'com.greenmoonsoftware'
+
+dependencies {
+    compile localGroovy()
+    compile gradleApi()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
         }
     }
 }
 
-apply plugin: 'com.greenmoonsoftware.gradle.jenkins'
+bintray {
+    user = bintrayUsername
+    key = binttrayApiKey
 
-jenkins {
-    console = true
-    jobName = 'greenmoon.build.root-project'
-    template {
-        scm {
-            url = 'git@github.com:greathouse/gradle-jenkins.git'
-        }
-        builders {
-            gradleBuild {
-
-            }
-        }
-        publishers {
-            junitResultArchiver {
-                testResults = '**/*.blech'
-            }
-            htmlPublisher {
-
-            }
-        }
+    publications = ['mavenJava']
+    publish = false //If version should be auto published after an upload
+    pkg {
+        repo = 'maven'
+        name = 'gradle-jenkins'
+        desc = 'A gradle plugin to configure jenkins jobs for projects'
+        websiteUrl = 'https://github.com/greathouse/gradle-jenkins'
+        issueTrackerUrl = 'https://github.com/greathouse/gradle-jenkins/issues'
+        vcsUrl = 'git@github.com:greathouse/gradle-jenkins.git'
+        licenses = ['Apache-2.0']
+        publicDownloadNumbers = true
     }
 }
 
