@@ -9,7 +9,7 @@ buildscript {
     }
 }
 
-apply plugin: 'jenkins'
+apply plugin: 'com.greenmoonsoftware.gradle.jenkins'
 
 jenkins {
     console = true
