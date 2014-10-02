@@ -15,6 +15,14 @@ jenkins {
     console = true
     jobName = 'greenmoon.build.root-project'
     template {
+        scm {
+            url = 'git@github.com:greathouse/gradle-jenkins.git'
+        }
+        builders {
+            gradleBuild {
+
+            }
+        }
         publishers {
             junitResultArchiver {
                 testResults = '**/*.blech'
@@ -24,4 +32,8 @@ jenkins {
             }
         }
     }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.1'
 }

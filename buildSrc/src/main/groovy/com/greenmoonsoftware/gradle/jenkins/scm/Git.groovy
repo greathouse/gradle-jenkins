@@ -4,7 +4,7 @@ class Git {
     final pluginVersion = 'git@2.2.2'
     String config = ''
     String url = ''
-    String branches = ''
+    String branches = '*/master'
     boolean doGenerateSubmoduleConfigurations = false
     PathRestriction pathRestriction
 
